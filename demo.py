@@ -118,7 +118,7 @@ def main():
     parser.add_argument("--cpp", action='store_true',
                         help="Use the C++ version of Whisper.")
     # Which Mic to use by providing mic name
-    parser.add_argument("--mic", default='blackhole', choices=["blackhole", "iphone", "macbook"],type=str,)
+    parser.add_argument("--mic", default='macbook', choices=["blackhole", "iphone", "macbook"],type=str,)
     parser.add_argument("--non_english", action='store_true',
                         help="Don't use the english model.")
     parser.add_argument("--energy_threshold", default=1000,

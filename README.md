@@ -11,6 +11,9 @@ python demo.py
 --cpp: Use WhisperCPP
 --model: Select whisper model size
 --live: Live Transcription Only
+--mic: Which Microphone to use
+```
+
 ```
 
 To install dependencies simply run
