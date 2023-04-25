@@ -3,10 +3,12 @@
 import argparse
 import io
 import os
-import speech_recognition as sr
-import whisper
-from whispercpp import Whisper as WhisperCPP
+
 import torch
+import openai
+import whisper
+import speech_recognition as sr
+from whispercpp import Whisper as WhisperCPP
 
 from datetime import datetime, timedelta
 from queue import Queue
@@ -117,6 +119,8 @@ def main():
                         help="Just live transcription.")
     parser.add_argument("--cpp", action='store_true',
                         help="Use the C++ version of Whisper.")
+    parser.add_argument("--api", action='store_true',
+                        help="Use the API version of Whisper.")
     # Which Mic to use by providing mic name
     parser.add_argument("--mic", default='macbook', choices=["blackhole", "iphone", "macbook"],type=str,)
     parser.add_argument("--non_english", action='store_true',
@@ -167,6 +171,7 @@ def main():
             if args.mic in microphone_name.lower():
                 print(f"Using Mic: {microphone_name}")
                 source = sr.Microphone(device_index=i, sample_rate=16000)
+                break
         # source = sr.Microphone(sample_rate=16000)
 
     # Load / Download model
@@ -176,13 +181,15 @@ def main():
 
     if args.cpp:
         audio_model = WhisperCPP.from_pretrained(model) # num_proc > 1 -> full_parallel
+    elif args.api:
+        audio_model = None
     else:
         audio_model = whisper.load_model(model)
 
     record_timeout = args.record_timeout
     phrase_timeout = args.phrase_timeout
 
-    temp_file = NamedTemporaryFile().name
+    temp_file = NamedTemporaryFile(suffix='.wav').name
     # print('temp_file', temp_file)
     transcription = ['']
     answers = ['']
@@ -240,7 +247,10 @@ def main():
                     result = transcribe_from_file(audio_model, temp_file, source.SAMPLE_RATE)
                     # result = audio_model.transcribe_from_file("/path/to/audio.wav")
                     text = result.strip()
-
+                elif args.api:
+                    file = open(temp_file, "rb")
+                    result = openai.Audio.transcribe("whisper-1", file)
+                    text = result['text'].strip()
                 else:
                     result = audio_model.transcribe(temp_file, fp16=torch.cuda.is_available())
                     text = result['text'].strip()
