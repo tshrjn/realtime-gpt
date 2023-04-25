@@ -13,9 +13,16 @@ python demo.py
 --live: Live Transcription Only
 --mic: Which Microphone to use
 ```
+I recommend using Blackhole to route audio to the model.
 
-```
 
+### Installation
+#### Screenshot to Answering
+* For Screenshot to Answer:
+Use `swift build` and then `swift run` to run the program.
+
+
+#### Live Transcription & Answering
 To install dependencies simply run
 ```
 pip install -r requirements.txt
@@ -44,3 +51,9 @@ scoop install ffmpeg
 For more information on Whisper please see https://github.com/openai/whisper
 
 The code in this repository is public domain.
+
+### TODO:
+- [ ] Combine Visual and Audio background
+- [ ] Start and stop from keyboard shortcut
+- [ ] A small GUI to control settings
+- [ ] Add STT model options to use whisper API, native MacOS
