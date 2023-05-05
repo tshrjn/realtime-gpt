@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         print("Application launched")
+        print("Waiting for Shift + Command + L hotkey to be pressed...")
         
         hotKey = HotKey(key: .l, modifiers: [.command, .shift])
         hotKey.keyDownHandler = { [weak self] in
@@ -90,8 +91,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             do {
                 let result = try await openAI.chats(query: query)
                 // Print only the content from the response
+                print("RESPONSE:\n=====================================")
                 print("OpenAI Chat API response: \(result.choices[0].message.content)")
+                print("=====================================")
                 // print("OpenAI Chat API response: \(result)")
+                // print("=====================================")
+
             } catch {
                 print("Error sending text to OpenAI Chat API: \(error.localizedDescription)")
             }
