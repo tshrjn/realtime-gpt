@@ -37,7 +37,7 @@ def transcribe_from_file(audio_model_cpp, audio_file, sample_rate):
     return ret
 
 
-def create_chain():
+def create_chain(model_name="gpt-4"):
     from langchain.chat_models import ChatOpenAI
     from langchain import PromptTemplate, LLMChain
     from langchain.chains import ConversationChain
@@ -49,7 +49,7 @@ def create_chain():
     )
     from langchain.memory import ConversationBufferWindowMemory
 
-    chat = ChatOpenAI(model_name="gpt-3.5-turbo")
+    chat = ChatOpenAI(model_name=model_name)
 
     template = ''' As you embark on your journey as a language model, 
     you have been granted a unique opportunity to take on the role of an expert
@@ -121,6 +121,8 @@ def main():
                         help="Use the C++ version of Whisper.")
     parser.add_argument("--api", action='store_true',
                         help="Use the API version of Whisper.")
+    parser.add_argument("--llm", default="gpt-3.5-turbo", choices=['gpt-3.5-turbo-0301','gpt-3.5-turbo', 'gpt-4', 'gpt-4-0314'],
+                        help="Language Model to use",)
     # Which Mic to use by providing mic name
     parser.add_argument("--mic", default='macbook', choices=["blackhole", "iphone", "macbook"],type=str,)
     parser.add_argument("--non_english", action='store_true',
@@ -194,7 +196,7 @@ def main():
     transcription = ['']
     answers = ['']
 
-    chain = create_chain()
+    chain = create_chain(args.llm)
 
     with source:
         recorder.adjust_for_ambient_noise(source)
