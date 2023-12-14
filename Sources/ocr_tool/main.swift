@@ -82,7 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func sendTextToOpenAI(text: String) {
         print("Sending text to OpenAI Chat API")
         
-        let query = ChatQuery(model: .gpt3_5Turbo, messages: [    
+        let query = ChatQuery(model: .gpt4Turbo, messages: [    
             .init(role: .system, content: systemPrompt),
             .init(role: .user, content: text)
             ])
