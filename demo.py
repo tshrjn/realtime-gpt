@@ -49,7 +49,7 @@ def create_chain():
     )
     from langchain.memory import ConversationBufferWindowMemory
 
-    chat = ChatOpenAI(model_name="gpt-3.5-turbo")
+    chat = ChatOpenAI(model_name="gpt4-turbo")
 
     template = ''' As you embark on your journey as a language model, 
     you have been granted a unique opportunity to take on the role of an expert
