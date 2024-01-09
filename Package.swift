@@ -8,7 +8,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/soffes/HotKey.git", from: "0.1.3"),
-        .package(url: "https://github.com/MacPaw/OpenAI.git", from: "0.1.2"),
+        .package(url: "https://github.com/MacPaw/OpenAI.git", from: "0.2.5"),
+        // .package(url: "https://github.com/MacPaw/OpenAI.git", from: "0.1.2"),
         
     ],
     targets: [
