@@ -27,7 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         print("Application launched")
-        
+        print("Waiting for Shift + Command + L hotkey to be pressed...")
+
         hotKey = HotKey(key: .l, modifiers: [.command, .shift])
         hotKey.keyDownHandler = { [weak self] in
             print("Hotkey triggered")
@@ -58,7 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func getTextFromImage(image: NSImage) {
         print("Extracting text from image")
-        
+
         let requestHandler = VNImageRequestHandler(cgImage: image.cgImage(forProposedRect: nil, context: nil, hints: nil)!, options: [:])
         let request = VNRecognizeTextRequest { [weak self] request, error in
             if let error = error {
@@ -81,8 +82,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func sendTextToOpenAI(text: String) {
         print("Sending text to OpenAI Chat API")
-        
-        let query = ChatQuery(model: .gpt3_5Turbo, messages: [    
+
+        // gpt3_5Turbo
+        let query = ChatQuery(model: .gpt4_1106_preview, messages: [
             .init(role: .system, content: systemPrompt),
             .init(role: .user, content: text)
             ])
@@ -90,8 +92,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             do {
                 let result = try await openAI.chats(query: query)
                 // Print only the content from the response
+                print("RESPONSE:\n=====================================")
                 print("OpenAI Chat API response: \(result.choices[0].message.content)")
+                print("=====================================")
                 // print("OpenAI Chat API response: \(result)")
+                // print("=====================================")
+
             } catch {
                 print("Error sending text to OpenAI Chat API: \(error.localizedDescription)")
             }
